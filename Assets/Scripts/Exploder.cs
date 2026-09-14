@@ -2,27 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider))]
-
-public class Cube : MonoBehaviour
+public class Exploder : MonoBehaviour
 {
     [SerializeField] private float _explosionRadius;
     [SerializeField] private float _explosionForce;
+    [SerializeField] private Splitter _splitter;
+    [SerializeField] private CubeCreator _cubeCreator;
 
-    public float SplitProbability {get; private set; }
-    public float Scale { get; private set; }
-
-    public void Destroy()
+    private void OnEnable()
     {
-        Destroy(gameObject);
+        _splitter.SplitFailed += Explode;
+        _cubeCreator.CubesCreated += Explode;
+    }
+
+    private void OnDisable()
+    {
+        _splitter.SplitFailed -= Explode;
+        _cubeCreator.CubesCreated -= Explode;
     }
 
     private void Explode()
     {
         foreach (Rigidbody explodebleObject in GetExplodableObject())
-            explodebleObject.AddExplosionForce(_explosionForce, transform.position, _explosionRadius);
-
-        Destroy();
+        {
+            if (_cubeCreator.IsCreatedCube(explodebleObject))
+            {
+                explodebleObject.AddExplosionForce(_explosionForce, transform.position, _explosionRadius);
+            }
+        }
+         
+        Destroy(gameObject);
     }
 
     private List<Rigidbody> GetExplodableObject()
