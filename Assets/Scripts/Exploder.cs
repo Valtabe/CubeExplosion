@@ -25,7 +25,7 @@ public class Exploder : MonoBehaviour
     {
         foreach (Rigidbody explodebleObject in GetExplodableObject())
         {
-            if (_cubeCreator.IsCreatedCube(explodebleObject))
+            if (_cubeCreator.IsCreatedCube(explodebleObject.gameObject))
             {
                 explodebleObject.AddExplosionForce(_explosionForce, transform.position, _explosionRadius);
             }

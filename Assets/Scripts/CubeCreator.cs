@@ -45,10 +45,12 @@ public class CubeCreator : MonoBehaviour
         creatingCube.transform.localScale = gameObject.transform.localScale / reductorFactor;
     }
 
-    public bool IsCreatedCube(Rigidbody rigidbodyTargetObject)
+    public bool IsCreatedCube(GameObject targetObject)
     {
         foreach (var cube in CreatedCubes)
-            if (cube.GetComponent<Rigidbody>() == rigidbodyTargetObject) return true;
+            if (cube.gameObject == targetObject) 
+                return true;
+
         return false;
     }
 }
