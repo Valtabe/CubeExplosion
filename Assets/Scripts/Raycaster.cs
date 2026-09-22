@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Raycaster : MonoBehaviour
@@ -22,7 +20,9 @@ public class Raycaster : MonoBehaviour
             if (Physics.Raycast(ray, out _hitinfo))
             {
                 if (_hitinfo.collider.TryGetComponent<Cube>(out Cube cube))
+                {
                     CubeInteracted?.Invoke(cube);
+                }
             }
         }
     }

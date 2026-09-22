@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,7 +20,7 @@ public class Spawner : MonoBehaviour
         {
             var creatingCube = Instantiate(_cubePrefab);
 
-            creatingCube.Explode += OnExplodeCube;
+            creatingCube.Exploded += OnExplodeCube;
 
             float verticalPosition = UnityEngine.Random.Range(-_verticalSpawnLimitPositions-1, _verticalSpawnLimitPositions+1);
             float horizontalPosition = UnityEngine.Random.Range(-_horizontalSpawnLimitPosition-1, _horizontalSpawnLimitPosition+1);
@@ -49,7 +48,7 @@ public class Spawner : MonoBehaviour
         int reductorFactor = (int)Math.Pow(2, parentCube.SplitCounter);
         var creatingCube = Instantiate(parentCube);
 
-        creatingCube.Explode += OnExplodeCube;
+        creatingCube.Exploded += OnExplodeCube;
 
         creatingCube.GetComponent<Renderer>().material.color = UnityEngine.Random.ColorHSV();
         creatingCube.transform.localScale = gameObject.transform.localScale / reductorFactor;
@@ -60,7 +59,8 @@ public class Spawner : MonoBehaviour
 
     private void OnExplodeCube(Cube cube)
     {
-        cube.Explode -= OnExplodeCube;
+        cube.Exploded -= OnExplodeCube;
         Destroy(cube.gameObject);
+        cube = null;
     }
 }

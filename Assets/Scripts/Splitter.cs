@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Splitter : MonoBehaviour
@@ -31,11 +29,11 @@ public class Splitter : MonoBehaviour
             
             List<Cube> createdCubes = _spawner.CreateFewCubes(parentCube);
             _exploder.ExplodeCube(createdCubes);
-            parentCube.Destroy();
+            parentCube.Explode();
         }
         else
         {
-            parentCube.Destroy();
+            parentCube.Explode();
         }
 
     }
