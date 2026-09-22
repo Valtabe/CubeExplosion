@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    private readonly string Horizontal = "Horizontal";
-    private readonly string Vertical = "Vertical";
+    [SerializeField] private InputReader _inputReader;
 
     [SerializeField] private float _speed;
 
     private void Update()
     {
-        Vector3 diractrion = new Vector3(Input.GetAxis(Horizontal), 0f, Input.GetAxis(Vertical));
+        Vector3 diractrion = new Vector3(_inputReader.InputHorizontalDiraction(), 0f, _inputReader.InputVerticalDiraction());
 
         transform.Translate(_speed * Time.deltaTime * diractrion);
     }

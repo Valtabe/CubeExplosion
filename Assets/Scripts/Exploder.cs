@@ -6,32 +6,18 @@ public class Exploder : MonoBehaviour
 {
     [SerializeField] private float _explosionRadius;
     [SerializeField] private float _explosionForce;
-    [SerializeField] private Splitter _splitter;
-    [SerializeField] private CubeCreator _cubeCreator;
 
-    private void OnEnable()
-    {
-        _splitter.SplitFailed += Explode;
-        _cubeCreator.CubesCreated += Explode;
-    }
-
-    private void OnDisable()
-    {
-        _splitter.SplitFailed -= Explode;
-        _cubeCreator.CubesCreated -= Explode;
-    }
-
-    private void Explode()
+    public void ExplodeCube(List<Cube> createdCube)
     {
         foreach (Rigidbody explodebleObject in GetExplodableObject())
         {
-            if (_cubeCreator.IsCreatedCube(explodebleObject.gameObject))
+            explodebleObject.TryGetComponent<Cube>(out Cube checkedCube);
+
+            if (createdCube.Contains(checkedCube))
             {
-                explodebleObject.AddExplosionForce(_explosionForce, transform.position, _explosionRadius);
+                explodebleObject.AddExplosionForce(_explosionForce, explodebleObject.transform.position, _explosionRadius);
             }
         }
-         
-        Destroy(gameObject);
     }
 
     private List<Rigidbody> GetExplodableObject()

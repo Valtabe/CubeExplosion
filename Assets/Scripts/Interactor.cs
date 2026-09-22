@@ -6,9 +6,8 @@ using UnityEngine;
 
 public class Interactor : MonoBehaviour
 {
-    private readonly KeyCode _activateButton = KeyCode.Mouse0;
-
     [SerializeField] private Transform _raycastPoint;
+    [SerializeField] private InputReader _inputReader;
 
     public event Action CubeInteracted;
 
@@ -16,7 +15,7 @@ public class Interactor : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(_activateButton))
+        if (_inputReader.MouseLeftButtonClicked)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 

@@ -1,44 +1,42 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Splitter : MonoBehaviour
 {
-    [SerializeField] private CubeCreator _cubeCreator;
-    [SerializeField] private Interactor _interactor;
-    [SerializeField] private int SplitCounter;
-
-    public event Action SplitFailed;
-    public event Action SplitSuccessed;
+    [SerializeField] private Spawner _spawner;
+    [SerializeField] private Exploder _exploder;
+    [SerializeField] private Raycaster _raycaster;
 
     private void OnEnable()
     {
-        _interactor.CubeInteracted += Split;
+        _raycaster.CubeInteracted += Split;
     }
 
     private void OnDisable()
     {
-        _interactor.CubeInteracted -= Split;
+        _raycaster.CubeInteracted -= Split;
     }
 
-    private void Split()
+    public void Split(Cube parentCube)
     {
-        if (_interactor.IsTarget(gameObject))
-        {
-            int maxProbability = 100;
-            float splitProbability = (float)(maxProbability / Math.Pow(2, SplitCounter));
-            int randomNumber = UnityEngine.Random.Range(0, maxProbability + 1);
+        float maxProbability = 100;
+        float splitProbability = (float)(maxProbability / Math.Pow(2, parentCube.SplitCounter-1));
+        float randomNumber = UnityEngine.Random.value * maxProbability;
 
-            if (randomNumber <= splitProbability)
-            {
-                SplitCounter++;
-                SplitSuccessed?.Invoke();
-            }
-            else
-            {
-                SplitFailed?.Invoke();
-            }
+        if (randomNumber <= splitProbability)
+        {
+            
+            List<Cube> createdCubes = _spawner.CreateFewCubes(parentCube);
+            _exploder.ExplodeCube(createdCubes);
+            parentCube.Destroy();
         }
+        else
+        {
+            parentCube.Destroy();
+        }
+
     }
 }
