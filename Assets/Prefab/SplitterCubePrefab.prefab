@@ -120,6 +120,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _splitCounter: 1
+  _splitChance: 1
 --- !u!54 &1984404991451234934
 Rigidbody:
   m_ObjectHideFlags: 0

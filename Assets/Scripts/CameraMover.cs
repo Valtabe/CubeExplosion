@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Looking : MonoBehaviour
+public class CameraMover : MonoBehaviour
 {
     private readonly string MouseX = "Mouse X";
     private readonly string MouseY = "Mouse Y";

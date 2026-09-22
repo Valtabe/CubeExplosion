@@ -20,13 +20,10 @@ public class Splitter : MonoBehaviour
 
     public void Split(Cube parentCube)
     {
-        float maxProbability = 100;
-        float splitProbability = (float)(maxProbability / Math.Pow(2, parentCube.SplitCounter-1));
-        float randomNumber = UnityEngine.Random.value * maxProbability;
+        float randomNumber = UnityEngine.Random.value;
 
-        if (randomNumber <= splitProbability)
+        if (randomNumber <= parentCube.SplitChance)
         {
-            
             List<Cube> createdCubes = _spawner.CreateFewCubes(parentCube);
             _exploder.ExplodeCube(createdCubes);
             parentCube.Explode();

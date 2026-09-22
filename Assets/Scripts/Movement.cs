@@ -6,9 +6,19 @@ public class Movement : MonoBehaviour
 
     [SerializeField] private float _speed;
 
-    private void Update()
+    private void OnEnable()
     {
-        Vector3 diractrion = new Vector3(_inputReader.InputHorizontalDiraction(), 0f, _inputReader.InputVerticalDiraction());
+        _inputReader.DiractionInputing += Move;
+    }
+
+    private void OnDisable()
+    {
+        _inputReader.DiractionInputing -= Move;
+    }
+
+    private void Move(float horizontalDiraction, float verticalDiraction)
+    {
+        Vector3 diractrion = new Vector3(horizontalDiraction, 0f, verticalDiraction);
 
         transform.Translate(_speed * Time.deltaTime * diractrion);
     }

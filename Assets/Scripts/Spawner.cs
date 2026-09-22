@@ -45,14 +45,14 @@ public class Spawner : MonoBehaviour
 
     private Cube Create(Cube parentCube)
     {
-        int reductorFactor = (int)Math.Pow(2, parentCube.SplitCounter);
+        int reductorFactor = 2;
         var creatingCube = Instantiate(parentCube);
 
         creatingCube.Exploded += OnExplodeCube;
 
         creatingCube.GetComponent<Renderer>().material.color = UnityEngine.Random.ColorHSV();
-        creatingCube.transform.localScale = gameObject.transform.localScale / reductorFactor;
-        creatingCube.IncreaseSplitCounter();
+        creatingCube.transform.localScale = gameObject.transform.localScale * parentCube.SplitChance / reductorFactor;
+        creatingCube.DecreaseSplitChance();
 
         return creatingCube;
     }

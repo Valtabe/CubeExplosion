@@ -8,26 +8,26 @@ public class Exploder : MonoBehaviour
 
     public void ExplodeCube(List<Cube> createdCube)
     {
-        foreach (Rigidbody explodebleObject in GetExplodableObject())
+        foreach (Cube explodebleObject in GetExplodableObject())
         {
-            explodebleObject.TryGetComponent<Cube>(out Cube checkedCube);
-
-            if (createdCube.Contains(checkedCube))
+            if (createdCube.Contains(explodebleObject))
             {
-                explodebleObject.AddExplosionForce(_explosionForce, explodebleObject.transform.position, _explosionRadius);
+                explodebleObject.GetComponent<Rigidbody>().AddExplosionForce(_explosionForce, explodebleObject.transform.position, _explosionRadius);
             }
         }
     }
 
-    private List<Rigidbody> GetExplodableObject()
+    private List<Cube> GetExplodableObject()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, _explosionRadius);
 
-        List<Rigidbody> explodebleObject = new();
+        List<Cube> explodebleObject = new();
 
         foreach (Collider hit in hits)
             if (hit.attachedRigidbody != null)
-                explodebleObject.Add(hit.attachedRigidbody);
+            {
+                explodebleObject.Add(hit.GetComponent<Cube>());
+            }
 
         return explodebleObject;
     }
