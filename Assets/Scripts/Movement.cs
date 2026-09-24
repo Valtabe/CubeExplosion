@@ -8,12 +8,12 @@ public class Movement : MonoBehaviour
 
     private void OnEnable()
     {
-        _inputReader.DiractionInputing += Move;
+        _inputReader.DirectionInputing += Move;
     }
 
     private void OnDisable()
     {
-        _inputReader.DiractionInputing -= Move;
+        _inputReader.DirectionInputing -= Move;
     }
 
     private void Move(float horizontalDiraction, float verticalDiraction)

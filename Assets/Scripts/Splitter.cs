@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,11 +24,12 @@ public class Splitter : MonoBehaviour
         if (randomNumber <= parentCube.SplitChance)
         {
             List<Cube> createdCubes = _spawner.CreateFewCubes(parentCube);
-            _exploder.ExplodeCube(createdCubes);
+            _exploder.ExplodeCreatedCubes(createdCubes, parentCube);
             parentCube.Explode();
         }
         else
         {
+            _exploder.ExplodeCubes(parentCube);
             parentCube.Explode();
         }
 

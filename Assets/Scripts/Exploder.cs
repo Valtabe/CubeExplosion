@@ -6,27 +6,36 @@ public class Exploder : MonoBehaviour
     [SerializeField] private float _explosionRadius;
     [SerializeField] private float _explosionForce;
 
-    public void ExplodeCube(List<Cube> createdCube)
+    public void ExplodeCreatedCubes(List<Cube> createdCube, Cube parentCube)
     {
-        foreach (Cube explodebleObject in GetExplodableObject())
+        foreach (Cube cube in createdCube)
         {
-            if (createdCube.Contains(explodebleObject))
-            {
-                explodebleObject.GetComponent<Rigidbody>().AddExplosionForce(_explosionForce, explodebleObject.transform.position, _explosionRadius);
-            }
+            cube.GetComponent<Rigidbody>().AddExplosionForce(_explosionForce, parentCube.transform.position, _explosionRadius);
         }
     }
 
-    private List<Cube> GetExplodableObject()
+    public void ExplodeCubes(Cube parentCube)
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, _explosionRadius);
+        float cubeExplosionRadius = _explosionRadius / parentCube.SplitChance; 
+        List<Cube> explodebleCubes = GetExplodableCubes(cubeExplosionRadius);
+
+        foreach (Cube cube in explodebleCubes)
+        {
+            float cubeCurrentForce = _explosionForce * (1f - Mathf.Clamp01(Vector3.Distance(cube.transform.position, parentCube.transform.position) / cubeExplosionRadius)) / parentCube.SplitChance;
+            cube.GetComponent<Rigidbody>().AddExplosionForce(cubeCurrentForce, parentCube.transform.position, cubeExplosionRadius);
+        }
+    }
+
+    private List<Cube> GetExplodableCubes(float radius)
+    {
+        Collider[] hits = Physics.OverlapSphere(transform.position, radius);
 
         List<Cube> explodebleObject = new();
 
         foreach (Collider hit in hits)
-            if (hit.attachedRigidbody != null)
+            if (hit.attachedRigidbody != null && hit.TryGetComponent(out Cube cube))
             {
-                explodebleObject.Add(hit.GetComponent<Cube>());
+                explodebleObject.Add(cube);
             }
 
         return explodebleObject;

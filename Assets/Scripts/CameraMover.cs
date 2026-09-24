@@ -2,20 +2,24 @@ using UnityEngine;
 
 public class CameraMover : MonoBehaviour
 {
-    private readonly string MouseX = "Mouse X";
-    private readonly string MouseY = "Mouse Y";
-    private readonly KeyCode _activateButton = KeyCode.Mouse1;
-
     [SerializeField] private float _speed;
     [SerializeField] private Transform _camera;
     [SerializeField] private Transform _body;
+    [SerializeField] private InputReader _inputReader;
 
-    private void Update()
+    private void OnEnable()
     {
-        if (Input.GetKey(_activateButton))
-        {
-            _camera.Rotate(_speed * -Input.GetAxis(MouseY) * Time.deltaTime * Vector3.right);
-            _body.Rotate(_speed * Input.GetAxis(MouseX) * Time.deltaTime * Vector3.up);
-        }
+        _inputReader.CameraInputing += RotateCamera;
+    }
+
+    private void OnDisable()
+    {
+        _inputReader.CameraInputing -= RotateCamera;
+    }
+
+    private void RotateCamera(float xInputDiraction, float yInputDiraction)
+    {
+        _camera.Rotate(_speed * -yInputDiraction * Time.deltaTime * Vector3.right);
+        _body.Rotate(_speed * xInputDiraction * Time.deltaTime * Vector3.up);
     }
 }

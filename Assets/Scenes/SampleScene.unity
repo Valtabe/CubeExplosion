@@ -449,6 +449,7 @@ MonoBehaviour:
   _speed: 500
   _camera: {fileID: 963194228}
   _body: {fileID: 446938072}
+  _inputReader: {fileID: 1815747783}
 --- !u!1 &579560036
 GameObject:
   m_ObjectHideFlags: 0
