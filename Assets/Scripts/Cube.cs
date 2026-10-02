@@ -7,9 +7,11 @@ public class Cube : MonoBehaviour
 
     public event Action<Cube> Exploded;
 
+    private int _divider = 2;
+
     public float SplitChance => _splitChance;
 
-    public void DecreaseSplitChance() => _splitChance /= 2;
+    public void DecreaseSplitChance() => _splitChance /= _divider;
 
     public void Explode()
     {
